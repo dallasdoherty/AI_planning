@@ -17,16 +17,16 @@
     (free ?arm)
 
     ; Locating <> Corridor Connections
-    (connected loc-3-1 c3132 loc-3-2)
-    (connected loc-1-2 c1222 loc-2-2)
-    (connected loc-2-2 c2232 loc-2-3)
-    (connected loc-3-2 c3233 loc-3-3)
-    (connected loc-2-3 c2223 loc-2-4)
-    (connected loc-3-3 c2333 loc-3-4)
-    (connected loc-4-2 c3242 loc-4-3)
-    (connected loc-3-4 c3334 loc-4-4)
-    (connected loc-2-4 c2434 loc-2-3)
-    (connected loc-4-4 c3444 loc-3-4)
+    (corridor loc-3-1 c3132 loc-3-2)
+    (corridor loc-1-2 c1222 loc-2-2)
+    (corridor loc-2-2 c2232 loc-2-3)
+    (corridor loc-3-2 c3233 loc-3-3)
+    (corridor loc-2-3 c2223 loc-2-4)
+    (corridor loc-3-3 c2333 loc-3-4)
+    (corridor loc-4-2 c3242 loc-4-3)
+    (corridor loc-3-4 c3334 loc-4-4)
+    (corridor loc-2-4 c2434 loc-2-3)
+    (corridor loc-4-4 c3444 loc-3-4)
 
     ; Key locations
     (at key1 loc-2-2)
