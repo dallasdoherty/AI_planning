@@ -21,8 +21,21 @@
 
         ; One predicate given for free!
         (hero-at ?loc - location)
-
-        ; IMPLEMENT ME
+        (is-corr ?loc - location ?cor - corridor ?loc - location )
+        (is-locked ?cor - corridor)
+        (risky ?cor - corridor)
+        (collapsed ?cor - corridor)
+        (messy ?loc - location)
+        (key-at ?loc -location ?key -key)
+        ; (holding ?key -key) ; maybe set this as false to start
+        (is-locked-col ?cor - corridor ?col - colour)
+        (uses ?key -key)
+        (uses0 ?key - key)
+        (uses1 ?key - key)
+        (uses2 ?key - key)
+        (key-col ?key - key ?col - colour)
+        (key-usage ?key - key )
+        (no-key ?key - key)
 
     )
 
@@ -39,21 +52,17 @@
         :parameters (?from ?to - location ?cor - corridor)
 
         :precondition (and
-            (at ?from)
-            (corridor ?from ?to ?cor)
-            (not(locked ?cor))
+
+            (hero-at ?from)   
+            (is-corr ?from ?cor ?to)   
+            (not (is-locked ?cor))     
+            (not (collapsed ?cor))               
 
         )
 
         :effect (and
-
-            (at ?to)
-            (not (at ?from))
-            (when (risky ?cor)
-                (collapsed ?cor)
-                (mess ?to)
-                )
-
+            (hero-at ?to)
+            (when (and (risky ?cor)) (and (messy ?to) (collapsed ?cor)))
         )
     )
 
@@ -68,19 +77,17 @@
         :parameters (?loc - location ?k - key)
 
         :precondition (and
-
-            (at ?loc)
-            (key ?k)
-            (at ?k ?loc)
-            (free ?arm)
-            (not (mess ?loc))
+        (hero-at ?loc)
+        (key-at ?loc ?k)
+        (no-key ?k)
+        ; (not(holding ?k)) ; fix this
+        (not(messy ?loc))           
 
         )
 
         :effect (and
-
-            (holding ?k)
-            (not(free ?arm))
+            (not(no-key ?k))
+            (not(key-at ?loc ?k))
 
         )
     )
@@ -95,14 +102,15 @@
 
         :precondition (and
 
-            (holding ?k)
-            (at ?loc)
+            (not(no-key ?k))
+            (hero-at ?loc)
 
         )
 
         :effect (and
 
-            (not(holding ?k))
+            (no-key ?k)
+            (key-at ?loc ?k)
 
         )
     )
@@ -121,22 +129,22 @@
         :parameters (?loc - location ?cor - corridor ?col - colour ?k - key)
 
         :precondition (and
-
-            (holding ?k)
-            (key-usage ?k ?uses)
-            (> ?uses 0)
-            (locked ?cor ?col)
-            (corridor ?cor ?from ?to)
-            (or(= ?from ?loc)(= ?to ?loc))
-            (key-colour ?k ?col)
+            (hero-at ?loc) 
+            (not(no-key ?k))
+            (not(uses0 ?k))                       
+            (is-locked ?cor)
+            (is-locked-col ?cor ?col)
+            (is-corr ?loc ?cor ?loc )
+            (key-col ?k ?col)
 
         )
 
         :effect (and
-
-            (not (locked ?cor ?col))
-            (decrease (key-usage ?k)1)
-
+            (not(is-locked-col ?cor ?col))
+            (not(is-locked ?cor))
+            ; when uses2 becomes uses1 and when uses1 becomes uses0
+            (when (and (uses2 ?k)) (and (not(uses2 ?k)) (uses1 ?k)))
+            (when (and (uses1 ?k)) (and (not(uses1 ?k)) (uses0 ?k)))
         )
     )
 
@@ -150,15 +158,17 @@
 
         :precondition (and
 
-            (mess ?loc)
+            (hero-at ?loc)
+            (messy ?loc)
 
         )
 
         :effect (and
 
-            (not (mess ?loc))
+            (not(messy ?loc))
 
         )
     )
 
 )
+
