@@ -134,7 +134,7 @@
             (is-locked-col ?cor ?col)
             (key-col ?k ?col)
             (hero-at ?loc)                       
-            (is-corr ?loc ?cor ?loc )
+            
 
         )
 
