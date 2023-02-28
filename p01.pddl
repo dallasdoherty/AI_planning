@@ -15,6 +15,7 @@
 
     ; Hero location and carrying status
     (hero-at loc-1-2)
+    ; (arm-free)
     ; (free-arm)
     ; (holding)
     (no-key key1)
@@ -31,6 +32,7 @@
     (is-corr loc-2-3 c2333 loc-3-3)
     (is-corr loc-3-2 c3242 loc-4-2)
     (is-corr loc-3-3 c3334 loc-3-4)
+    (is-corr loc-2-3 c2324 loc-2-4)
     (is-corr loc-2-4 c2434 loc-3-4)
     (is-corr loc-3-4 c3444 loc-4-4)
     
@@ -42,6 +44,7 @@
     (is-corr loc-3-3 c2333 loc-2-3)
     (is-corr loc-4-2 c3242 loc-3-2)
     (is-corr loc-3-4 c3334 loc-3-3)
+    (is-corr loc-2-4 c2324 loc-2-3)
     (is-corr loc-3-4 c2434 loc-2-4)
     (is-corr loc-4-4 c3444 loc-3-4)
     
