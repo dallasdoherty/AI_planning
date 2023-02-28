@@ -34,6 +34,9 @@
         (uses2 ?key - key)
         (key-col ?key - key ?col - colour)
         (no-key ?key - key)
+        (free-arm)
+        (conn-corr ?loc - location ?cor - corridor)
+        (holding ?key - key)
 
     )
 
@@ -50,8 +53,10 @@
         :parameters (?from ?to - location ?cor - corridor)
 
         :precondition (and
+        
 
-            (hero-at ?from)   
+            (hero-at ?from) 
+            (not(hero-at ?to))
             (is-corr ?from ?cor ?to)   
             (not (is-locked ?cor))     
             (not (collapsed ?cor))               
@@ -60,7 +65,7 @@
 
         :effect (and
             (hero-at ?to)
-            (when (and (risky ?cor)) (and (messy ?to) (collapsed ?cor)))
+            (when (and (risky ?cor)) (and (messy ?to) (collapsed ?cor) (not(is-corr ?to ?cor ?from)) (not(is-corr ?from ?cor ?to))))
         )
     )
 
@@ -77,12 +82,16 @@
         :precondition (and
         (hero-at ?loc)
         (key-at ?loc ?k)
+        ; (free-arm)
+        ; (not(holding ?k))
         (no-key ?k)
         (not(messy ?loc))           
 
         )
 
         :effect (and
+            ; (not(free-arm))
+            ; (holding ?k)
             (not(no-key ?k))
             (not(key-at ?loc ?k))
 
@@ -98,6 +107,8 @@
         :parameters (?loc - location ?k - key)
 
         :precondition (and
+            ; (holding ?k)
+            ; (not(free-arm))
 
             (not(no-key ?k))
             (hero-at ?loc)
@@ -105,6 +116,8 @@
         )
 
         :effect (and
+            ; (free-arm)
+            ; (not(holding ?k))
 
             (no-key ?k)
             (key-at ?loc ?k)
@@ -127,11 +140,13 @@
 
         :precondition (and
             (hero-at ?loc) 
+            ; (holding ?k)
             (not(no-key ?k))
             (not(uses0 ?k))                       
             (is-locked ?cor)
             (is-locked-col ?cor ?col)
             (key-col ?k ?col)
+            (conn-corr ?loc ?cor)
 
         )
 
