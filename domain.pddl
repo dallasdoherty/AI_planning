@@ -29,12 +29,10 @@
         (key-at ?loc -location ?key -key)
         ; (holding ?key -key) ; maybe set this as false to start
         (is-locked-col ?cor - corridor ?col - colour)
-        (uses ?key -key)
         (uses0 ?key - key)
         (uses1 ?key - key)
         (uses2 ?key - key)
         (key-col ?key - key ?col - colour)
-        (key-usage ?key - key )
         (no-key ?key - key)
 
     )
@@ -80,7 +78,6 @@
         (hero-at ?loc)
         (key-at ?loc ?k)
         (no-key ?k)
-        ; (not(holding ?k)) ; fix this
         (not(messy ?loc))           
 
         )
@@ -134,7 +131,6 @@
             (not(uses0 ?k))                       
             (is-locked ?cor)
             (is-locked-col ?cor ?col)
-            (is-corr ?loc ?cor ?loc )
             (key-col ?k ?col)
 
         )
@@ -171,4 +167,3 @@
     )
 
 )
-

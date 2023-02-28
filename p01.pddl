@@ -29,10 +29,8 @@
     ; (risky c1222)
 
     ; Key colours
-    ; (uses key) = {1,2,3}
     (key-col key1 red)
     (no-key key1)
-    ; (not(holding key1)) 
 
     ; Key usage properties (one use, two use, etc)
     ; (uses key1)
