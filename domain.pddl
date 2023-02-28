@@ -54,9 +54,9 @@
         :precondition (and
 
             (hero-at ?from)   
-            (is-corr ?from ?cor ?to)   
-            (not (is-locked ?cor))     
-            (not (collapsed ?cor))               
+            (is-corr ?from ?cor ?to) 
+            (not (collapsed ?cor))   
+            (not (is-locked ?cor))                    
 
         )
 
@@ -129,13 +129,12 @@
         :parameters (?loc - location ?cor - corridor ?col - colour ?k - key)
 
         :precondition (and
-            (hero-at ?loc) 
             (not(no-key ?k))
-            (not(uses0 ?k))                       
-            (is-locked ?cor)
+            (not(uses0 ?k)) 
             (is-locked-col ?cor ?col)
-            (is-corr ?loc ?cor ?loc )
             (key-col ?k ?col)
+            (hero-at ?loc)                       
+            (is-corr ?loc ?cor ?loc )
 
         )
 
