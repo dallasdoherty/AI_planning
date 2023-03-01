@@ -21,23 +21,27 @@
 
         ; One predicate given for free!
         (hero-at ?loc - location)
+        ; Initalize corridors between rooms
         (is-corr ?loc - location ?cor - corridor ?loc - location )
+        ; Various predicates for rooms being locked, risky, messy or corridors being collapsed
         (is-locked ?cor - corridor)
         (risky ?cor - corridor)
         (collapsed ?cor - corridor)
         (messy ?loc - location)
         (key-at ?loc -location ?key -key)
-        ; (holding ?key -key) ; maybe set this as false to start
+        ; Identifies colour of lock
         (is-locked-col ?cor - corridor ?col - colour)
+        ; Possible times a key can be uses, modified after unlocking
         (uses0 ?key - key)
         (uses1 ?key - key)
         (uses2 ?key - key)
         (key-col ?key - key ?col - colour)
+        ; Whether hero is holding key/has a free arm to pick up another
         (no-key ?key - key)
         (free-arm)
+        ; Adjacent rooms with locked corridors
         (conn-corr ?loc - location ?cor - corridor)
         (holding ?key - key)
-        ; (arm-free)
 
     )
 
@@ -54,22 +58,21 @@
         :parameters (?from ?to - location ?cor - corridor)
 
         :precondition (and
-        
-
+            ; Hero is at location, and can move through a stable corridor
             (hero-at ?from) 
             (not(hero-at ?to))
             (is-corr ?from ?cor ?to)   
             (not (is-locked ?cor))     
-            (not (collapsed ?cor))               
+            (not (collapsed ?cor))              
 
         )
 
         :effect (and
+            ; Remove hero from previous location, set at new location
             (not(hero-at ?from))
             (hero-at ?to)
-            ; (not(hero-at ?from))
+            ; Collapse risky corridors
             (when (and (risky ?cor)) (and (messy ?to) (collapsed ?cor) ))
-            ; (when (and (risky ?cor)) (and (messy ?to) (collapsed ?cor) (not(is-corr ?to ?cor ?from)) (not(is-corr ?from ?cor ?to))))
         )
     )
 
@@ -84,22 +87,19 @@
         :parameters (?loc - location ?k - key)
 
         :precondition (and
+        ; Pick up if arm is free and not holding a key (and room is clean)
         (hero-at ?loc)
         (key-at ?loc ?k)
-        ; (free-arm)
-        ; (not(holding ?k))
-        (no-key ?k)
-        ; (arm-free)
-        ; (not(arm-free))
+        (free-arm)
+        (not(holding ?k))
         (not(messy ?loc))           
 
         )
 
         :effect (and
-            ; (not(arm-free))
-            ; (not(free-arm))
-            ; (holding ?k)
-            (not(no-key ?k))
+            (not(free-arm))
+            (holding ?k)
+            ; Remove the key from position so it can't be picked up again
             (not(key-at ?loc ?k))
 
         )
@@ -114,19 +114,17 @@
         :parameters (?loc - location ?k - key)
 
         :precondition (and
-            ; (holding ?k)
-            ; (not(free-arm))
-            ; (not(arm-free))
+            ; Allowable drop 
+            (holding ?k)
+            (not(free-arm))
             (hero-at ?loc)
-            (not(no-key ?k))
 
         )
 
         :effect (and
-            ; (free-arm)
-            ; (not(holding ?k))
-            ; (arm-free)
-            (no-key ?k)
+            ; Free arm and set key at new location
+            (free-arm)
+            (not(holding ?k))
             (key-at ?loc ?k)
 
         )
@@ -146,10 +144,10 @@
         :parameters (?loc - location ?cor - corridor ?col - colour ?k - key)
 
         :precondition (and
+            ; Unlock a lock if key and lock have the same corridor and here is in adjacent room
             (hero-at ?loc) 
-            ; (holding ?k)
-            ; (not(arm-free))
-            (not(no-key ?k))
+            (holding ?k)
+            (not(free-arm))
             (not(uses0 ?k))                       
             (is-locked ?cor)
             (is-locked-col ?cor ?col)
@@ -159,6 +157,7 @@
         )
 
         :effect (and
+            ; Decrease uses if it's a finite use key
             (not(is-locked-col ?cor ?col))
             (not(is-locked ?cor))
             ; when uses2 becomes uses1 and when uses1 becomes uses0
@@ -176,14 +175,13 @@
         :parameters (?loc - location)
 
         :precondition (and
-
+            ; Change predicates associated with messy room if hero is in right spot
             (hero-at ?loc)
             (messy ?loc)
 
         )
 
         :effect (and
-
             (not(messy ?loc))
 
         )

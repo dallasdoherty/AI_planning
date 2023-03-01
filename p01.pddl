@@ -15,15 +15,10 @@
 
     ; Hero location and carrying status
     (hero-at loc-1-2)
-    ; (arm-free)
-    ; (free-arm)
-    ; (holding)
-    (no-key key1)
-    (no-key key2)
-    (no-key key3)
-    (no-key key4)
-
+    (free-arm)  ; initally, holding no keys
+   
     ; Locating <> Corridor Connections
+    ; corridors go both ways (fwd and back)
     (is-corr loc-3-1 c3132 loc-3-2)
     (is-corr loc-1-2 c1222 loc-2-2)
     (is-corr loc-2-2 c2232 loc-3-2)
@@ -48,6 +43,7 @@
     (is-corr loc-3-4 c2434 loc-2-4)
     (is-corr loc-4-4 c3444 loc-3-4)
     
+    ; corridors with locks connected to rooms so you can only unlock when in an adjacent room
     (conn-corr loc-2-3 c2324)
     (conn-corr loc-2-4 c2434)
     (conn-corr loc-2-4 c2324)
@@ -56,20 +52,12 @@
     (conn-corr loc-3-4 c3444)
     (conn-corr loc-3-2 c3132)
 
-
-
-
-
-
-
     ; Key locations
     (key-at loc-2-2 key1)
     (key-at loc-2-4 key2)
     (key-at loc-4-2 key3)
     (key-at loc-4-4 key4)
     
-    
-
     ; Locked corridors
     (is-locked c3132)
     (is-locked c3242)
@@ -83,8 +71,6 @@
     (is-locked-col c2434 red)
     (is-locked-col c3444 yellow)
     
-    
-
     ; Risky corridors
     (risky c2324)
     (risky c2434)
@@ -96,6 +82,7 @@
     (key-col key4 purple)
 
     ; Key usage properties (one use, two use, etc)
+    ; Each key assigned a certain number of uses (doesn't matter for infite use keys)
     (uses2 key2)
     (uses1 key3)
     (uses1 key4)
@@ -103,7 +90,7 @@
   )
   (:goal
     (and
-      ; Hero's final location goes here
+      ; Hero's final location
       (hero-at loc-3-1)
     )
   )
